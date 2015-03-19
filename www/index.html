@@ -65,12 +65,14 @@
 
         $('#showToken').click(function() {
             $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
-                $( '#output' ).html(response );
-
-                console.log(response);
+                if( response.code == 5 ) {
+                    $( '#output' ).append( 'Authorized!' );
+                } else {
+                    $( '#output' ).append( 'Not Authorized' );
+                }
             });
         });
-
+        
         $('#matchEmail').click(function() {
             $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
                 $( '#output' ).html(response );
