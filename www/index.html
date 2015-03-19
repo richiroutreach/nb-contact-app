@@ -47,41 +47,53 @@
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+
     <script>
         $('#logIn').click(function() {
-            $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'code' }, function( response ) {
+            $.getJSON('api-endpoint.php', { slug: 'richir', endpoint: 'code' }, function( response ) {
                 if( response.result.code == 2 ) {
+                    $( '#output' ).html(response.result.redirect_url );
                     window.open( response.result.redirect_url );
                 }
             });
         });
 
         $('#showToken').click(function() {
-            $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
+            $.getJSON('api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
+                $( '#output' ).html(response );
+
                 console.log(response);
             });
         });
 
         $('#matchEmail').click(function() {
-            $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
+            $.getJSON('api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
+                $( '#output' ).html(response );
+
                 console.log(response);
             });
         });
 
         $('#testPush').click(function() {
-            $.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'push', params: { person: { email: "nicole@richiroutreach.com", will_vote: "no" } } }, function(response) {
+            $.getJSON( 'api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'push', params: { person: { email: "nicole@richiroutreach.com", will_vote: "no" } } }, function(response) {
+                $( '#output' ).html(response );
+
                 console.log(response);
             });
         });
 
         $('#searchFunction').click(function() {
-            $.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'search', params: { custom_values: { will_vote: "yes" } } }, function(response) {
+            $.getJSON( 'api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'search', params: { custom_values: { will_vote: "yes" } } }, function(response) {
+                $( '#output' ).html(response );
+
                 console.log(response);
             });
         });
 
         $('#showIndex').click(function() {
-            $.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'index' }, function(response) {
+            $.getJSON( 'api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'index' }, function(response) {
+                $( '#output' ).html(response );
+
                 console.log(response);
             });
         });
