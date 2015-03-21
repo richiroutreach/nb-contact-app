@@ -16,7 +16,12 @@
 	</head>
 
 	<body>
-		<input class="button large" type="button" id="logIn" value="Log In" />
+		<div class="row">
+			<div class="large-12 columns">
+				<input class="button large" type="button" id="logIn" value="Log In" style="width: 100%; font-size: 5rem;" />
+			</div>
+		</div> <!-- .row -->
+
 		<input class="button large" type="button" id="showToken" value="Show Token" />
 		<input class="button large" type="button" id="showIndex" value="Index" />
 		<input class="button large" type="button" id="matchEmail" value="Lookup Nicole" />
@@ -50,7 +55,7 @@
 			});
 		});
 
-		$('#matchEmail').click(function() {
+		$('#matchEmail').click(f````````````````unction() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
 				$( '#output' ).html(response );
 			});
