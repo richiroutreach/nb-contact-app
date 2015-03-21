@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
 		<link rel="stylesheet" href="css/foundation.min.css" />
+		<link rel="stylesheet" href="css/app.css" />
 
 		<script src="js/vendor/modernizr.js"></script>
 	</head>
@@ -18,7 +19,14 @@
 	<body>
 		<div class="row">
 			<div class="large-12 columns">
-				<input class="button large" type="button" id="logIn" value="Log In" style="width: 100%; font-size: 5rem;" />
+				<h1>Contacts</h1>
+
+				<div>
+					<label for="slug">Nation:</label>
+					<input name="slug" id="slug" type="text" />
+				</div>
+
+				<input class="button large" type="button" id="logIn" value="Log In" />
 			</div>
 		</div> <!-- .row -->
 
@@ -36,9 +44,7 @@
 
 	<script>
 		$('#logIn').click(function() {
-			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'code' }, function( response ) {
-				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
-
+			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
 				if( response.result.code == 2 ) {
 					window.open( response.result.redirect_url );
 				}
