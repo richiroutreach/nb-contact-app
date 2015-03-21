@@ -29,11 +29,13 @@
 			</div>
 		</div> <!-- .row -->
 
-		<input class="button large" type="button" id="showToken" value="Show Token" />
-		<input class="button large" type="button" id="showIndex" value="Index" />
-		<input class="button large" type="button" id="matchEmail" value="Lookup Nicole" />
-		<input class="button large" type="button" id="searchFunction" value="Search" />
-		<input class="button large" type="button" id="testPush" value="Push" />
+		<div class="hidden">
+			<input class="button large" type="button" id="showToken" value="Show Token" />
+			<input class="button large" type="button" id="showIndex" value="Index" />
+			<input class="button large" type="button" id="matchEmail" value="Lookup Nicole" />
+			<input class="button large" type="button" id="searchFunction" value="Search" />
+			<input class="button large" type="button" id="testPush" value="Push" />
+		</div>
 
 		<div id="output"></div>
 	</body>
@@ -45,7 +47,7 @@
 		$('#logIn').click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
 				if( response.result.code == 2 ) {
-					var ref = window.open( response.result.redirect_url, "_blank" );
+					var ref = window.open( response.result.redirect_url, "_self" );
 				}
 			});
 		});
