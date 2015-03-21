@@ -55,7 +55,7 @@
 			});
 		});
 
-		$('#matchEmail').click(f````````````````unction() {
+		$('#matchEmail').click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
 				$( '#output' ).html(response );
 			});
