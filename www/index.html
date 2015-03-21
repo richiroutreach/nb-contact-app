@@ -37,7 +37,7 @@
 	<script>
 		$('#logIn').click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'code' }, function( response ) {
-				$( '#output' ).append( '<h1>' + response.result.redirect_url + '</h1>' );
+				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
 
 				if( response.result.code == 2 ) {
 					window.open( response.result.redirect_url );
