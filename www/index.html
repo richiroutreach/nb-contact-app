@@ -1,112 +1,84 @@
 <!DOCTYPE html>
-<!--
-    Copyright (c) 2012-2014 Adobe Systems Incorporated. All rights reserved.
-
-    Licensed to the Apache Software Foundation (ASF) under one
-    or more contributor license agreements.  See the NOTICE file
-    distributed with this work for additional information
-    regarding copyright ownership.  The ASF licenses this file
-    to you under the Apache License, Version 2.0 (the
-    "License"); you may not use this file except in compliance
-    with the License.  You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing,
-    software distributed under the License is distributed on an
-    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-     KIND, either express or implied.  See the License for the
-    specific language governing permissions and limitations
-    under the License.
--->
 <html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="msapplication-tap-highlight" content="no" />
-        <!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-        <title>NationBuilder Contacts</title>
- 
-        <link rel="stylesheet" href="css/foundation.min.css" />
-   
-        <script src="js/vendor/modernizr.js"></script>
-    </head>
-    <body>
-        <input class="button" type="button" id="logIn" value="Log In" />
-        <input type="button" id="showToken" value="Show Token" />
-        <input type="button" id="showIndex" value="Index" />
-        <input type="button" id="matchEmail" value="Lookup Nicole" />
-        <input type="button" id="searchFunction" value="Search" />
-        <input type="button" id="testPush" value="Push" />
+	<head>
+		<meta charset="utf-8" />
+		<meta name="format-detection" content="telephone=no" />
+		<meta name="msapplication-tap-highlight" content="no" />
+		<title>NationBuilder Contacts</title>
 
-        <div id="output"></div>
-    </body>
+		<!-- WARNING: for iOS 7, remove the width=device-width and height=device-height attributes. See https://issues.apache.org/jira/browse/CB-4323 -->
+		<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="css/foundation.min.css" />
 
-    <script>
-        $('#logIn').click(function() {
-            $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'code' }, function( response ) {
-                console.log( response );
+		<script src="js/vendor/modernizr.js"></script>
+	</head>
 
-                $( '#output' ).append( '<h1>' + response.result.redirect_url + '</h1>' );
+	<body>
+		<input class="button large" type="button" id="logIn" value="Log In" />
+		<input class="button large" type="button" id="showToken" value="Show Token" />
+		<input class="button large" type="button" id="showIndex" value="Index" />
+		<input class="button large" type="button" id="matchEmail" value="Lookup Nicole" />
+		<input class="button large" type="button" id="searchFunction" value="Search" />
+		<input class="button large" type="button" id="testPush" value="Push" />
 
-                if( response.result.code == 2 ) {
-                    window.open( response.result.redirect_url );
-                }
-            });
-        });
+		<div id="output"></div>
+	</body>
 
-        $('#showToken').click(function() {
-            $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
-                if( response.code == 5 ) {
-                    $( '#output' ).append( 'Authorized!' );
-                } else {
-                    $( '#output' ).append( 'Not Authorized' );
-                }
-            });
-        });
-        
-        $('#matchEmail').click(function() {
-            $.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
-                $( '#output' ).html(response );
+	<!-- jQuery -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-                console.log(response);
-            });
-        });
+	<script>
+		$('#logIn').click(function() {
+			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'code' }, function( response ) {
+				$( '#output' ).append( '<h1>' + response.result.redirect_url + '</h1>' );
 
-        $('#testPush').click(function() {
-            $.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'push', params: { person: { email: "nicole@richiroutreach.com", will_vote: "no" } } }, function(response) {
-                $( '#output' ).html(response );
+				if( response.result.code == 2 ) {
+					window.open( response.result.redirect_url );
+				}
+			});
+		});
 
-                console.log(response);
-            });
-        });
+		$('#showToken').click(function() {
+			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
+				if( response.code == 5 ) {
+					$( '#output' ).append( 'Authorized!' );
+				} else {
+					$( '#output' ).append( 'Not Authorized' );
+				}
+			});
+		});
 
-        $('#searchFunction').click(function() {
-            $.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'search', params: { custom_values: { will_vote: "yes" } } }, function(response) {
-                $( '#output' ).html(response );
+		$('#matchEmail').click(function() {
+			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
+				$( '#output' ).html(response );
+			});
+		});
 
-                console.log(response);
-            });
-        });
+		$('#testPush').click(function() {
+			$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'push', params: { person: { email: "nicole@richiroutreach.com", will_vote: "no" } } }, function(response) {
+				$( '#output' ).html(response );
+			});
+		});
 
-        $('#showIndex').click(function() {
-            $.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'index' }, function(response) {
-                $( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
+		$('#searchFunction').click(function() {
+			$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'search', params: { custom_values: { will_vote: "yes" } } }, function(response) {
+				$( '#output' ).html(response );
+			});
+		});
 
-                console.log(response);
-            });
-        });
-    </script>
+		$('#showIndex').click(function() {
+			$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'index' }, function(response) {
+				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
+			});
+		});
+	</script>
 
-    <script src="js/vendor/jquery.js"></script>
-    <script src="js/foundation.min.js"></script>
-    
-    <script>
-        $(document).foundation();
-    </script>
+	<script src="js/vendor/jquery.js"></script>
+	<script src="js/foundation.min.js"></script>
+
+	<script>
+		$(document).foundation();
+	</script>
 </html>
