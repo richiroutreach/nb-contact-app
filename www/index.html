@@ -80,10 +80,19 @@
 		});
 	</script>
 
-	<script src="js/vendor/jquery.js"></script>
+	<!-- Required for Phone Gap -->
+	<script type="text/javascript" src="cordova.js"></script>
+
+	<script type="text/javascript">
+		// Initialize PhoneGap
+		app.initialize();
+	</script>
+
+	<!-- Foundation JS -->
 	<script src="js/foundation.min.js"></script>
 
 	<script>
+		// Initialize Foundation
 		$(document).foundation();
 	</script>
 </html>
