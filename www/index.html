@@ -90,7 +90,9 @@
 
 		function checkAuthentication() {
 			setTimeout(function() {
-				$.get( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
+				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
+
+				$.get( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'authorized' }, function( response ) {
 					if( response.result.code == "5" ) {
 						$( document ).trigger( 'authenticated' );
 						clearTimeout();
