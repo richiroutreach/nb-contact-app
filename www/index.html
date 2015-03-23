@@ -17,6 +17,10 @@
 	</head>
 
 	<body>
+		<div id="working-modal" class="reveal-modal tiny" data-reveal data-options="close_on_background_click:false">
+			<i class="fa fa-cog fa-spin"></i>		
+		</div>
+
 		<div id="log-in-box" class="row">
 			<div class="large-12 columns">
 				<div class="logo">
@@ -124,9 +128,7 @@
 		$(document).on("authenticated", function() {
 			$( '#log-in-box' ).fadeOut( 300 );
 
-			$( '#main-menu').fadeIn( 300 );
-
-//			$( '#loading-modal' ).foundation('reveal', 'open');
+			$( '#loading-modal' ).foundation('reveal', 'open');
 
 			loadData();
 		});		
@@ -163,7 +165,7 @@
 */
 				})
 			).done(function() {
-//				$( '#loading-modal' ).foundation('reveal', 'close');
+				$( '#loading-modal' ).foundation('reveal', 'close');
 				$( '#main-menu' ).fadeIn( 300 );
 			});
 		}
