@@ -24,7 +24,7 @@
 		</div>
 
 		<div id="log-in-box" class="row">
-			<div class="large-12 columns">
+			<div class="small-12 columns">
 				<div class="logo">
 					<img src="img/nb-logo.png" />
 				</div>
@@ -39,21 +39,51 @@
 			</div>
 		</div> <!-- #log-in-box -->
 
-		<div id="main-menu" class="row hidden">
-			<div class="large-12 columns">
+		<div id="top-nav" class="row hidden">
+			<div class="top-navigation">
+				<div class="small-6 columns">
+					<i class="fa fa-search fa-fw"></i>
+				</div>
+
+				<div class="small-6 columns">
+					<i class="fa fa-search fa-fw"></i>
+				</div>
+			</div> <!-- .top-navigation -->
+		</div> <!-- #top-nav -->
+
+		<div id="main-menu" class="interface-window row hidden">
+			<div class="small-12 columns">
 				<a id="search-button">
 					<i class="fa fa-search fa-fw"></i>
 					<span>Search Contacts</span>
 				</a>
 			</div>
 
-			<div class="large-12 columns">
+			<div class="small-12 columns">
 				<a id="create-button">
-					<i class="fa fa-plus fa-fw"></i>
+					<i class="fa fa-search fa-fw"></i>
 					<span>Add Contact</span>
 				</a>
 			</div>
 		</div> <!-- #main-menu -->
+
+		<div id="search-form" class="interface-window row hidden">
+			<div class="small-4 columns">
+				<label for="search-email">Email:</label>
+			</div>
+
+			<div class="small-8 columns">
+				<input type="email" id="search-email" name="search-email" />
+			</div>
+
+			<div class="small-12 columns">
+				<input type="button" class="button large" id="search-submit" value="Search" />
+			</div>
+		</div> <!-- #search-menu -->
+
+		<div id="results" class="interface-window row hidden">
+
+		</div> <!-- #results -->
 
 		<div class="hidden">
 			<input class="button large" type="button" id="showToken" value="Show Token" />
@@ -69,9 +99,6 @@
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
-	<!-- jQuery Cookie -->
-	<script src="js/jquery.cookie.js"></script>
-
 	<!-- Required for Phone Gap -->
 	<script type="text/javascript" src="cordova.js"></script>
 
@@ -81,6 +108,9 @@
 	<script>
 		// Global Variables
 		var slug;
+		var methods = {};
+		var types = {};
+		var statuses = {};
 
 		// Initialize Foundation
 		$( document ).foundation();
@@ -89,22 +119,34 @@
 		app.initialize();
 
 		$( document ).ready( function() {
-			if(typeof $.cookie('settings') !== 'undefined') {
-				$( '#slug' ).val( $.cookie('slug') );
-			}
 		});
 
 		$( '#logIn' ).click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
-				if(typeof $.cookie('settings') !== 'undefined') {
-					$.cookie('slug', $( '#slug' ).val() );
-				}
-
 				checkAuthentication();
 
 				if( response.result.code == 2 ) {
 					var ref = window.open( response.result.redirect_url, "_blank" );		
 				}
+			});
+		});
+
+		$( '#search-button' ).click( function() { 
+			$( this ).fadeOut( 300, function() {
+				$( '#search-form' ).delay( 50 ).fadeIn( 300 );
+			});
+		});
+
+		$( '#search-submit' ).click( function() {
+			$( this ).prop( 'disabled', true );
+
+			$.when(
+				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'people', method: 'match', params: { email: $( '#search-email' ).val() } }, function( response ) {
+					console.log( response );
+					$( '#results' ).append( response.result.person.full_name ).show();
+				})
+			).done( function() {
+				$( '#search-submit' ).prop( 'disabled', false );
 			});
 		});
 
@@ -132,36 +174,31 @@
 		function loadData() {
 			$.when(
 				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'nation', method: 'contact_types' }, function( response ) {
-/*
 					for( i = 0; i < response.result.results.length; i++ ) {
 						types[ response.result.results[i].id ] = response.result.results[i].name;
 
 						$( '#select-type' ).append('<option value="' + response.result.results[i].id + '">' + response.result.results[i].name + '</option>')
 					}
-*/
 				}),
 
 				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'nation', method: 'contact_methods' }, function( response ) {
-/*
 					for( i = 0; i < response.result.results.length; i++ ) {
 						methods[ response.result.results[i].api_name ] = response.result.results[i].name;
 
 						$( '#select-method' ).append('<option value="' + response.result.results[i].api_name + '">' + response.result.results[i].name + '</option>')
 					}
-*/
 				}),		
 
 				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'nation', method: 'contact_statuses' }, function( response ) {
-/*
 					for( i = 0; i < response.result.results.length; i++ ) {
 						statuses[ response.result.results[i].api_name ] = response.result.results[i].name;
 
 						$( '#select-status' ).append('<option value="' + response.result.results[i].api_name + '">' + response.result.results[i].name + '</option>')
 					}
-*/
 				})
 			).done(function() {
 				$( '#loading-modal' ).foundation('reveal', 'close');
+				$( '#top-nav' ).fadeIn( 300 ); 
 				$( '#main-menu' ).fadeIn( 300 );
 			});
 		}
