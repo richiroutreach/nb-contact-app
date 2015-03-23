@@ -17,8 +17,10 @@
 	</head>
 
 	<body>
-		<div id="loading-modal" class="reveal-modal" data-reveal data-options="close_on_background_click:false">
-			<i class="fa fa-cog fa-spin"></i>	
+		<div id="loading-modal" class="reveal-modal tiny" data-reveal data-options="close_on_background_click:false">
+			<h3><i class="fa fa-cog fa-spin"></i>Loading...</h3>
+
+			<p>Loading information from your nation. Please be patient.</p>	
 		</div>
 
 		<div id="log-in-box" class="row">
@@ -67,49 +69,42 @@
 	<!-- jQuery -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
+	<!-- jQuery Cookie -->
+	<script src="js/jquery.cookie.js"></script>
+
+	<!-- Required for Phone Gap -->
+	<script type="text/javascript" src="cordova.js"></script>
+
+	<!-- Foundation JS -->
+	<script src="js/foundation.min.js"></script>
+
 	<script>
-		$('#logIn').click(function() {
+		// Global Variables
+		var slug;
+
+		// Initialize Foundation
+		$( document ).foundation();
+
+		// Initialize PhoneGap
+		app.initialize();
+
+		$( document ).ready( function() {
+			if(typeof $.cookie('settings') !== 'undefined') {
+				$( '#slug' ).val( $.cookie('slug') );
+			}
+		});
+
+		$( '#logIn' ).click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
+				if(typeof $.cookie('settings') !== 'undefined') {
+					$.cookie('slug', $( '#slug' ).val() );
+				}
+
 				checkAuthentication();
-				console.log(response);
 
 				if( response.result.code == 2 ) {
 					var ref = window.open( response.result.redirect_url, "_blank" );		
 				}
-			});
-		});
-
-		$('#showToken').click(function() {
-			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
-				if( response.code == 5 ) {
-					$( '#output' ).append( 'Authorized!' );
-				} else {
-					$( '#output' ).append( 'Not Authorized' );
-				}
-			});
-		});
-
-		$('#matchEmail').click(function() {
-			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'match', params: { email: 'nicole@richiroutreach.com' } }, function( response ) {
-				$( '#output' ).html(response );
-			});
-		});
-
-		$('#testPush').click(function() {
-			$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'push', params: { person: { email: "nicole@richiroutreach.com", will_vote: "no" } } }, function(response) {
-				$( '#output' ).html(response );
-			});
-		});
-
-		$('#searchFunction').click(function() {
-			$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'search', params: { custom_values: { will_vote: "yes" } } }, function(response) {
-				$( '#output' ).html(response );
-			});
-		});
-
-		$('#showIndex').click(function() {
-			$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'people', method: 'index' }, function(response) {
-				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
 			});
 		});
 
@@ -170,21 +165,5 @@
 				$( '#main-menu' ).fadeIn( 300 );
 			});
 		}
-	</script>
-
-	<!-- Required for Phone Gap -->
-	<script type="text/javascript" src="cordova.js"></script>
-
-	<script type="text/javascript">
-		// Initialize PhoneGap
-		app.initialize();
-	</script>
-
-	<!-- Foundation JS -->
-	<script src="js/foundation.min.js"></script>
-
-	<script>
-		// Initialize Foundation
-		$(document).foundation();
 	</script>
 </html>
