@@ -48,6 +48,8 @@
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
 				if( response.result.code == 2 ) {
 					var ref = window.open( response.result.redirect_url, "_self" );
+				
+					checkAuthentication();
 				}
 			});
 		});
@@ -85,6 +87,27 @@
 				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
 			});
 		});
+
+		function checkAuthentication() {
+			setTimeout(function() {
+				$.get( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: 'richir', endpoint: 'authorized' }, function( response ) {
+					if( response.code == "5" ) {
+						$( document ).trigger( 'authenticated' );
+						clearTimeout();
+					} else {
+						checkAuthentication();
+					}
+				});
+			}, 1000);			
+		}
+
+		$(document).on("authenticated", function() {
+			$( '#log-in-box' ).fadeOut( 300 );
+
+//			$( '#loading-modal' ).foundation('reveal', 'open');
+
+//			loadData();
+		});		
 	</script>
 
 	<!-- Required for Phone Gap -->
