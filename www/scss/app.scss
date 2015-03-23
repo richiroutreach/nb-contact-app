@@ -27,17 +27,15 @@ html {
 	---------------------------------------------------------------------------
 */
 
-#working-modal {
-	text-align: center;
-	border: none;
-	background: transparent;
-	box-shadow: none;
-
-	i {
-		color: $warning-color;
-		font-size: 20rem;
+#loading-modal {
+	h3 {
+		.fa {
+			margin-right: 1rem;
+			color: $nb-blue;
+		}
 	}
 }
+
 
 /*
 	---------------------------------------------------------------------------

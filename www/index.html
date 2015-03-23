@@ -17,8 +17,8 @@
 	</head>
 
 	<body>
-		<div id="working-modal" class="reveal-modal tiny" data-reveal data-options="close_on_background_click:false">
-			<i class="fa fa-cog fa-spin"></i>		
+		<div id="loading-modal" class="reveal-modal" data-reveal data-options="close_on_background_click:false">
+			<i class="fa fa-cog fa-spin"></i>	
 		</div>
 
 		<div id="log-in-box" class="row">
@@ -71,6 +71,7 @@
 		$('#logIn').click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
 				checkAuthentication();
+				console.log(response);
 
 				if( response.result.code == 2 ) {
 					var ref = window.open( response.result.redirect_url, "_blank" );		
