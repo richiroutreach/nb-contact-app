@@ -46,10 +46,10 @@
 	<script>
 		$('#logIn').click(function() {
 			$.getJSON('http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'code' }, function( response ) {
+				checkAuthentication();
+
 				if( response.result.code == 2 ) {
-					var ref = window.open( response.result.redirect_url, "_self" );
-				
-					checkAuthentication();
+					var ref = window.open( response.result.redirect_url, "_self" );		
 				}
 			});
 		});
@@ -90,7 +90,7 @@
 
 		function checkAuthentication() {
 			setTimeout(function() {
-				$( '#output' ).append( '<h1>' + response.result.code + '</h1>' );
+				$( '#output' ).append( '<h1>Result: ' + response.result.code + '</h1>' );
 
 				$.get( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'authorized' }, function( response ) {
 					if( response.result.code == "5" ) {
