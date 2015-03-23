@@ -31,7 +31,23 @@
 
 				<input class="button wide large" type="button" id="logIn" value="Log In" />
 			</div>
-		</div> <!-- .row -->
+		</div> <!-- #log-in-box -->
+
+		<div id="main-menu" class="row hidden">
+			<div class="large-12 columns">
+				<a id="search-button">
+					<i class="fa fa-search fa-fw"></i>
+					<span>Search Contacts</span>
+				</a>
+			</div>
+
+			<div class="large-12 columns">
+				<a id="create-button">
+					<i class="fa fa-plus fa-fw"></i>
+					<span>Add Contact</span>
+				</a>
+			</div>
+		</div> <!-- #main-menu -->
 
 		<div class="hidden">
 			<input class="button large" type="button" id="showToken" value="Show Token" />
@@ -108,10 +124,49 @@
 		$(document).on("authenticated", function() {
 			$( '#log-in-box' ).fadeOut( 300 );
 
+			$( '#main-menu').fadeIn( 300 );
+
 //			$( '#loading-modal' ).foundation('reveal', 'open');
 
-//			loadData();
+			loadData();
 		});		
+
+		function loadData() {
+			$.when(
+				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'nation', method: 'contact_types' }, function( response ) {
+/*
+					for( i = 0; i < response.result.results.length; i++ ) {
+						types[ response.result.results[i].id ] = response.result.results[i].name;
+
+						$( '#select-type' ).append('<option value="' + response.result.results[i].id + '">' + response.result.results[i].name + '</option>')
+					}
+*/
+				}),
+
+				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'nation', method: 'contact_methods' }, function( response ) {
+/*
+					for( i = 0; i < response.result.results.length; i++ ) {
+						methods[ response.result.results[i].api_name ] = response.result.results[i].name;
+
+						$( '#select-method' ).append('<option value="' + response.result.results[i].api_name + '">' + response.result.results[i].name + '</option>')
+					}
+*/
+				}),		
+
+				$.getJSON( 'http://contacts.richiroutreach.com/api-endpoint.php', { slug: $( '#slug' ).val(), endpoint: 'nation', method: 'contact_statuses' }, function( response ) {
+/*
+					for( i = 0; i < response.result.results.length; i++ ) {
+						statuses[ response.result.results[i].api_name ] = response.result.results[i].name;
+
+						$( '#select-status' ).append('<option value="' + response.result.results[i].api_name + '">' + response.result.results[i].name + '</option>')
+					}
+*/
+				}),
+			).done(function() {
+//				$( '#loading-modal' ).foundation('reveal', 'close');
+				$( '#main-menu' ).fadeIn( 300 );
+			});
+		}
 	</script>
 
 	<!-- Required for Phone Gap -->
